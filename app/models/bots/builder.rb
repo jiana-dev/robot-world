@@ -8,8 +8,8 @@ module Bots
       end
     end
 
-    def wipe_out_stock
-      return
+    def wipe_out_stock!
+      (Car.all - Car.sold).each(&:destroy!)
     end
   end
 end
