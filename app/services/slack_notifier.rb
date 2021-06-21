@@ -3,7 +3,7 @@ class SlackNotifier
     header = {'Content-Type': 'text/json'}
     slack_text_data = { "text": message }
 
-    uri = URI.parse('https://hooks.slack.com/services/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')
+    uri = URI.parse('https://hooks.slack.com/services/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')
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -11,6 +11,6 @@ class SlackNotifier
     request = Net::HTTP::Post.new(uri.request_uri, header)
     request.body = slack_text_data.to_json
 
-    response = http.request(request)
+    http.request(request)
   end
 end

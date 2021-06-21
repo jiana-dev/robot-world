@@ -4,7 +4,7 @@ class Car < ApplicationRecord
   LABOUR_COST = 100
   PROFIT_PERCENTAGE = 1.3
 
-  has_many :car_parts
+  has_many :car_parts, dependent: :destroy
 
   include AASM
 
@@ -37,23 +37,23 @@ class Car < ApplicationRecord
     end
   end
 
-  def computer
-    car_parts.find_by(name: 'computer')
-  end
-
   def complete?
     COMPLETED_STATES.include?(state)
   end
 
   def current_assembly_stage
-    return nil unless ASSEMBLY_STAGES.includes?(state)
+    return nil unless ASSEMBLY_STAGES.include?(state)
 
-    car.state
+    state
+  end
+
+  def computer
+    car_parts.find_by(name: 'computer')
   end
 
   def cost_price
     car_parts_cost = 0
-    car.car_parts.each { |part| car_cost += part.cost }
+    car_parts.each { |part| car_parts_cost += part.cost_price }
 
     car_parts_cost + LABOUR_COST
   end

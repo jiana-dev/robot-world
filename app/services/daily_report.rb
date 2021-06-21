@@ -10,17 +10,16 @@ class DailyReport
   end
 
   def cars_sold
-    all_orders.count
+    all_orders.size
   end
 
   def average_order_value
-    all_orders.sum(&:value)
+    all_orders.sum(&:value) / cars_sold
   end
 
   private
 
   def all_orders
-    # If car not present, it tried to be exchanged but the replacement wasn't in stock
-    Order.where(updated_at: date.all_day).select { |order| order.car.present? }
+    Order.where(updated_at: date.all_day)
   end
 end

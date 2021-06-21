@@ -2,7 +2,7 @@ module Bots
   class Builder
     MAX_CARS = 10
 
-    def call
+    def build!
       for i in (1..MAX_CARS)
         CarBuilderService.new.build_car!
       end

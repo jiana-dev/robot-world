@@ -1,14 +1,13 @@
-class StockChecker
-  FACTORY_MAX = 100 # ASSUMPTION: Warehouse and store have maximums
-  STORE_MAX = 50
+module StockChecker
+  STORE_MAX = 50 # ASSUMPTION: Store has maximum
 
-  def self.factory_stock(model:)
+  def self.factory_stock(model: nil)
     return Car.in_factory.where(model: model) if model
 
     Car.in_factory
   end
 
-  def self.store_stock(model:)
+  def self.store_stock(model: nil)
     return Car.in_store.where(model: model) if model
 
     Car.in_store
@@ -22,4 +21,7 @@ class StockChecker
     Car.in_factory.select { |car| car.computer.defects.empty? }
   end
 
+  def self.in_store_stock?(model)
+    store_stock(model: model).select { |car| car.model == model }.present?
+  end
 end

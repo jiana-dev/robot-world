@@ -3,45 +3,43 @@ module Bots
     CARS_TO_BUY = (1..10).to_a
     CARS_TO_EXCHANGE = (1..5).to_a # ASSUMPTION: Exchange 1 to 5 cars per hour
 
-    def call
+    def buy!
       for i in (1..CARS_TO_BUY.sample)
-        place_order!(CarBuilderService::MODELS.sample)
+        new_model = CarBuilderService::MODELS.sample
+
+        if StockChecker.in_store_stock?(new_model)
+          place_order!(new_model)
+        else
+          alert_out_of_stock(new_model)
+        end
       end
     end
 
-    def exchange_cars!
-      order_ids = Order.pluck(:id).sample(CARS_TO_EXCHANGE.sample)
-      order_ids.each do |o_id|
-        exchange_car!(o_id, CarBuilderService::MODELS.sample)
+    def exchange!
+      orders = Order.all.sample(CARS_TO_EXCHANGE.sample)
+      orders.each do |order|
+        exchange_car!(order, CarBuilderService::MODELS.sample)
       end
     end
 
     private
 
     def place_order!(model, existing_order: nil)
-      car_order = Car.in_store.find_by(model: model)
-
-      if car_order.nil?
-        alert_out_of_stock(model) # ASSUMPTION: Log via Slack
-        return
-      end
-
-      existing_order.present? ? existing_order.update!(car: car_order) : Order.create!(car: car_order)
+      car = Car.in_store.find_by(model: model)
+      existing_order.present? ? Order.exchange!(existing_order, car) : Order.place!(car)
     end
 
-    def alert_out_of_stock(model)
-      ::SlackNotifier.post("#{Time.zone.now} Out of Stock: #{model}")
+    def alert_out_of_stock(model) # ASSUMPTION: Log via Slack
+      SlackNotifier.post("#{Time.zone.now} Out of Stock: #{model}")
     end
 
-    def exchange_car!(order_id, new_model)
-      order = Order.find(order_id)
-
-      if order.car
+    def exchange_car!(order, new_model)
+      if StockChecker.in_store_stock?(new_model)
         order.car.to_store!
-        order.car = nil
+        place_order!(new_model, existing_order: order)
+      else
+        alert_out_of_stock(new_model)
       end
-
-      place_order!(new_model, existing_order: order)
     end
   end
 end

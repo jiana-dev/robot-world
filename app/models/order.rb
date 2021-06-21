@@ -1,19 +1,21 @@
 class Order < ApplicationRecord
-  belongs_to :car
+  belongs_to :car, optional: true
 
-  after_save :decrease_store_stock
-
-  private
-
-  def decrease_store_stock
+  def self.place!(car)
     car.purchase!
+    create!(car: car)
+  end
+
+  def self.exchange!(order, car)
+    car.purchase!
+    order.update!(car: car)
   end
 
   def revenue
-    car&.revenue.to_i
+    car.revenue
   end
 
   def value
-    car&.price.to_i
+    car.price
   end
 end

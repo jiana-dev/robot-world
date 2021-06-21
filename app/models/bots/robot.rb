@@ -2,8 +2,8 @@ module Bots
   class Robot < ApplicationRecord
     self.table_name = 'robots'
 
-    def call
-      specialized_robot.call
+    def call(method)
+      specialized_robot.public_send(method)
     end
 
     private
