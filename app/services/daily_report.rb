@@ -20,6 +20,6 @@ class DailyReport
   private
 
   def all_orders
-    Order.where(updated_at: date.all_day)
+    Order.where(created_at: date.all_day)
   end
 end
