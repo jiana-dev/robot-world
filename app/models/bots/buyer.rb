@@ -15,15 +15,15 @@ module Bots
       end
     end
 
-    def exchange!(order_ids:, new_models:)
-      if order_ids.present?
+    def exchange!(order_ids: [], new_models: [])
+      if order_ids.any?
         orders = order_ids.map{ |o_id| Order.find(o_id) }
       else
         orders = Order.all.sample(CARS_TO_EXCHANGE.sample)
       end
 
       orders.each_with_index do |order, index|
-        model = new_models.present? ? new_models[index] : CarBuilderService::MODELS.sample
+        model = new_models.any? ? new_models[index] : CarBuilderService::MODELS.sample
         exchange_car!(order, model)
       end
     end

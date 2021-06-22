@@ -20,7 +20,7 @@ RSpec.describe SlackNotifier do
   let(:http_post) { instance_double(Net::HTTP::Post) }
 
   it 'uses the right URI' do
-    expect(URI).to have_received(:parse).with('https://hooks.slack.com/services/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 ')
+    expect(URI).to have_received(:parse).with('https://hooks.slack.com/services/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')
   end
 
   it 'sends post request' do
