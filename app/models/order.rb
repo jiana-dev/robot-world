@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-  belongs_to :car, optional: true
+  belongs_to :car
 
   def self.place!(car)
     car.purchase!
@@ -11,9 +11,7 @@ class Order < ApplicationRecord
     order.update!(car: car)
   end
 
-  def revenue
-    car.revenue
-  end
+  delegate :revenue, to: :car
 
   def value
     car.price

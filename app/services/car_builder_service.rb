@@ -1,8 +1,9 @@
 class CarBuilderService
   attr_reader :car
 
-  MODELS = %w(mazda_scrum isuzu_mysterious_utility_wizard ford_probe honda_joy_machine tang_hua_detroit_fish
-              volkswagen_thing toyota_deliboy amc_gremlin mitsubishi_lettuce honda_life_dunk)
+  MODELS = %w(mazda_scrum isuzu_mysterious_utility_wizard ford_probe honda_joy_machine
+              tang_hua_detroit_fish volkswagen_thing toyota_deliboy amc_gremlin
+              mitsubishi_lettuce honda_life_dunk)
   YEAR = Time.zone.now.year
 
   def build_car!

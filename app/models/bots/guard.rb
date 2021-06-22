@@ -1,5 +1,3 @@
-require 'net/http'
-
 module Bots
   class Guard
     MAX_CARS = 10

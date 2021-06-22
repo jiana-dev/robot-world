@@ -40,8 +40,8 @@ RSpec.describe DailyReport do
     after(:all) { DatabaseCleaner.clean }
 
     it 'only returns orders made on the date' do
-      Order.create(created_at: Date.new(2021,6,20))
-      Order.create(created_at: Date.new(2021,6,21))
+      Order.create(created_at: Date.new(2021,6,20), car: Car.create)
+      Order.create(created_at: Date.new(2021,6,21), car: Car.create)
 
       report = DailyReport.new(date: Date.new(2021,6,21))
 
