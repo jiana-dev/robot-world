@@ -1,3 +1,14 @@
+# Robot World Database Design
+![Database Design](./db_design.png)
+
+## Instructions
+* To build `docker-compose build`
+* To run migrations `docker-compose run web rails db:migrate`
+* To open the rails console `docker-compose run web rails c`
+* To run tests `docker-compose run web bundle exec rspec`
+
+
+# Problem Description
 ## Foreword
 First of all, thanks for taking the time to take this tech challenge. We really appreciate it. And now, are you ready to rumble? :)
 

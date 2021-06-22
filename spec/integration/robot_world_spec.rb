@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-xdescribe 'RobotWorld' do
+describe 'RobotWorld' do
   before(:all) do
     DatabaseCleaner.start
     Rails.application.load_seed
